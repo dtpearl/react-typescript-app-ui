@@ -14,7 +14,7 @@ const IndexPage: NextPage<Props, InitialProps> = props => {
 };
 
 IndexPage.getInitialProps = async () => ({
-    greeting: 'Hello World!'
+    greeting: 'Hello Everyone!'
 })
 
 export default IndexPage;
