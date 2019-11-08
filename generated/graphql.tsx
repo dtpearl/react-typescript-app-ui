@@ -104,6 +104,19 @@ export type CreateTaskMutation = (
   )> }
 );
 
+export type TaskQueryVariables = {
+  id: Scalars['Int']
+};
+
+
+export type TaskQuery = (
+  { __typename?: 'Query' }
+  & { task: Maybe<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
 export type TasksQueryVariables = {
   status?: Maybe<TaskStatus>
 };
@@ -112,6 +125,19 @@ export type TasksQueryVariables = {
 export type TasksQuery = (
   { __typename?: 'Query' }
   & { tasks: Array<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
+export type UpdateTaskMutationVariables = {
+  input: UpdateTaskInput
+};
+
+
+export type UpdateTaskMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTask: Maybe<(
     { __typename?: 'Task' }
     & Pick<Task, 'id' | 'title' | 'status'>
   )> }
@@ -147,6 +173,33 @@ export function withCreateTask<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type CreateTaskMutationResult = ApolloReactCommon.MutationResult<CreateTaskMutation>;
 export type CreateTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
+export const TaskDocument = gql`
+    query Task($id: Int!) {
+  task(id: $id) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type TaskComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<TaskQuery, TaskQueryVariables>, 'query'> & ({ variables: TaskQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const TaskComponent = (props: TaskComponentProps) => (
+      <ApolloReactComponents.Query<TaskQuery, TaskQueryVariables> query={TaskDocument} {...props} />
+    );
+    
+export type TaskProps<TChildProps = {}> = ApolloReactHoc.DataProps<TaskQuery, TaskQueryVariables> & TChildProps;
+export function withTask<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  TaskQuery,
+  TaskQueryVariables,
+  TaskProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, TaskQuery, TaskQueryVariables, TaskProps<TChildProps>>(TaskDocument, {
+      alias: 'task',
+      ...operationOptions
+    });
+};
+export type TaskQueryResult = ApolloReactCommon.QueryResult<TaskQuery, TaskQueryVariables>;
 export const TasksDocument = gql`
     query Tasks($status: TaskStatus) {
   tasks(status: $status) {
@@ -174,3 +227,32 @@ export function withTasks<TProps, TChildProps = {}>(operationOptions?: ApolloRea
     });
 };
 export type TasksQueryResult = ApolloReactCommon.QueryResult<TasksQuery, TasksQueryVariables>;
+export const UpdateTaskDocument = gql`
+    mutation UpdateTask($input: UpdateTaskInput!) {
+  updateTask(input: $input) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type UpdateTaskMutationFn = ApolloReactCommon.MutationFunction<UpdateTaskMutation, UpdateTaskMutationVariables>;
+export type UpdateTaskComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateTaskMutation, UpdateTaskMutationVariables>, 'mutation'>;
+
+    export const UpdateTaskComponent = (props: UpdateTaskComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateTaskMutation, UpdateTaskMutationVariables> mutation={UpdateTaskDocument} {...props} />
+    );
+    
+export type UpdateTaskProps<TChildProps = {}> = ApolloReactHoc.MutateProps<UpdateTaskMutation, UpdateTaskMutationVariables> & TChildProps;
+export function withUpdateTask<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables,
+  UpdateTaskProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateTaskMutation, UpdateTaskMutationVariables, UpdateTaskProps<TChildProps>>(UpdateTaskDocument, {
+      alias: 'updateTask',
+      ...operationOptions
+    });
+};
+export type UpdateTaskMutationResult = ApolloReactCommon.MutationResult<UpdateTaskMutation>;
+export type UpdateTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTaskMutation, UpdateTaskMutationVariables>;
