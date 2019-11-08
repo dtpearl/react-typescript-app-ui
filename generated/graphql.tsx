@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
 import * as ApolloReactCommon from '@apollo/react-common';
+import * as React from 'react';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 export type Maybe<T> = T | null;
@@ -91,6 +91,19 @@ export type UpdateTaskInput = {
 };
 
 
+export type CreateTaskMutationVariables = {
+  input: CreateTaskInput
+};
+
+
+export type CreateTaskMutation = (
+  { __typename?: 'Mutation' }
+  & { createTask: Maybe<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
 export type TasksQueryVariables = {
   status?: Maybe<TaskStatus>
 };
@@ -105,6 +118,35 @@ export type TasksQuery = (
 );
 
 
+export const CreateTaskDocument = gql`
+    mutation CreateTask($input: CreateTaskInput!) {
+  createTask(input: $input) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type CreateTaskMutationFn = ApolloReactCommon.MutationFunction<CreateTaskMutation, CreateTaskMutationVariables>;
+export type CreateTaskComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreateTaskMutation, CreateTaskMutationVariables>, 'mutation'>;
+
+    export const CreateTaskComponent = (props: CreateTaskComponentProps) => (
+      <ApolloReactComponents.Mutation<CreateTaskMutation, CreateTaskMutationVariables> mutation={CreateTaskDocument} {...props} />
+    );
+    
+export type CreateTaskProps<TChildProps = {}> = ApolloReactHoc.MutateProps<CreateTaskMutation, CreateTaskMutationVariables> & TChildProps;
+export function withCreateTask<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  CreateTaskMutation,
+  CreateTaskMutationVariables,
+  CreateTaskProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, CreateTaskMutation, CreateTaskMutationVariables, CreateTaskProps<TChildProps>>(CreateTaskDocument, {
+      alias: 'createTask',
+      ...operationOptions
+    });
+};
+export type CreateTaskMutationResult = ApolloReactCommon.MutationResult<CreateTaskMutation>;
+export type CreateTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
 export const TasksDocument = gql`
     query Tasks($status: TaskStatus) {
   tasks(status: $status) {
