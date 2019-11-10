@@ -104,7 +104,8 @@
 
 import React, { useState } from 'react';
 import Router from 'next/router';
-import { withUpdateTask, UpdateTaskMutationFn } from '../generated/graphql';
+import { withUpdateTask, UpdateTaskMutationFn, UpdateTaskMutation, UpdateTaskMutationVariables, UpdateTaskDocument } from '../generated/graphql';
+import { graphql } from 'react-apollo';
 
 interface FormState {
   id: number;
@@ -196,6 +197,6 @@ const UpdateTaskForm: React.FunctionComponent<AllProps> = ({
   );
 };
 
-export default withUpdateTask<ExposedProps, UpdateTaskMutationProps>({
+export default graphql<ExposedProps, UpdateTaskMutation, UpdateTaskMutationVariables, UpdateTaskMutationProps>(UpdateTaskDocument, {
   props: ({ mutate }) => ({ updateTask: mutate })
 })(UpdateTaskForm);
