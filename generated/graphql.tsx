@@ -91,6 +91,20 @@ export type UpdateTaskInput = {
 };
 
 
+export type ChangeStatusMutationVariables = {
+  id: Scalars['Int'],
+  status: TaskStatus
+};
+
+
+export type ChangeStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { changeStatus: Maybe<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
 export type CreateTaskMutationVariables = {
   input: CreateTaskInput
 };
@@ -157,6 +171,35 @@ export type UpdateTaskMutation = (
 );
 
 
+export const ChangeStatusDocument = gql`
+    mutation ChangeStatus($id: Int!, $status: TaskStatus!) {
+  changeStatus(id: $id, status: $status) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type ChangeStatusMutationFn = ApolloReactCommon.MutationFunction<ChangeStatusMutation, ChangeStatusMutationVariables>;
+export type ChangeStatusComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ChangeStatusMutation, ChangeStatusMutationVariables>, 'mutation'>;
+
+    export const ChangeStatusComponent = (props: ChangeStatusComponentProps) => (
+      <ApolloReactComponents.Mutation<ChangeStatusMutation, ChangeStatusMutationVariables> mutation={ChangeStatusDocument} {...props} />
+    );
+    
+export type ChangeStatusProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ChangeStatusMutation, ChangeStatusMutationVariables> & TChildProps;
+export function withChangeStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ChangeStatusMutation,
+  ChangeStatusMutationVariables,
+  ChangeStatusProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ChangeStatusMutation, ChangeStatusMutationVariables, ChangeStatusProps<TChildProps>>(ChangeStatusDocument, {
+      alias: 'changeStatus',
+      ...operationOptions
+    });
+};
+export type ChangeStatusMutationResult = ApolloReactCommon.MutationResult<ChangeStatusMutation>;
+export type ChangeStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeStatusMutation, ChangeStatusMutationVariables>;
 export const CreateTaskDocument = gql`
     mutation CreateTask($input: CreateTaskInput!) {
   createTask(input: $input) {
