@@ -16,6 +16,7 @@ import { Task,
 import { graphql } from 'react-apollo';
 import Link from 'next/link';
 import { isApolloError } from 'apollo-boost';
+import { ITaskFilter } from './TaskFilter';
 
 interface MutationProps {
     deleteTask?: DeleteTaskMutationFn;
@@ -24,11 +25,12 @@ interface MutationProps {
 
 interface ExposedProps {
     tasks: Task[];
+    filter: ITaskFilter;
 }
 
 type AllProps = MutationProps & ExposedProps;
 
-export const TaskList: React.FunctionComponent<AllProps> = ({ tasks, deleteTask, changeStatus }) => {
+export const TaskList: React.FunctionComponent<AllProps> = ({ tasks, deleteTask, changeStatus, filter }) => {
 
     const deleteTaskById = async (id: number) => {
         if (deleteTask) {
@@ -39,12 +41,12 @@ export const TaskList: React.FunctionComponent<AllProps> = ({ tasks, deleteTask,
                         if (result.data && result.data.deleteTask) {
                             const tasksCache = cache.readQuery<TasksQuery, TasksQueryVariables>({
                                 query: TasksDocument,
-                                variables: { status: TaskStatus.Active }
+                                variables: filter
                             });
                             if (tasksCache) {
                                 cache.writeQuery<TasksQuery, TasksQueryVariables>({
                                     query: TasksDocument,
-                                    variables: { status: TaskStatus.Active },
+                                    variables: filter,
                                     data: {
                                         tasks: tasksCache.tasks.filter(task => task.id !== id)
                                     }
@@ -66,7 +68,24 @@ export const TaskList: React.FunctionComponent<AllProps> = ({ tasks, deleteTask,
     const changeTaskStatusById = async (id: number, status: TaskStatus) => {
         if (changeStatus) {
             await changeStatus({
-                variables: { id, status }
+                variables: { id, status },
+                update: (cache, result) => {
+                    if ( filter.status && result.data && result.data.changeStatus) {
+                        const tasksCache = cache.readQuery<TasksQuery, TasksQueryVariables>({
+                            query: TasksDocument,
+                            variables: filter
+                        });
+                        if (tasksCache) {
+                            cache.writeQuery<TasksQuery, TasksQueryVariables>({
+                                query: TasksDocument,
+                                variables: filter,
+                                data: {
+                                    tasks: tasksCache.tasks.filter(task => task.status === filter.status)
+                                }
+                            })
+                        }
+                    }
+                }
             })
         }
     }
