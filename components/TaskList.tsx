@@ -196,7 +196,7 @@ export const TaskList: React.FunctionComponent<AllProps> = ({ tasks, deleteTask,
                     opacity: 1;
                   }
                   .checkbox span:hover {
-                    box-shadow: inset 0 0 0 2px #dde5ff;
+                    box-shadow: inset 0 0 0 2px #dde5fg;
                   }
             `}</style>
         </ul>
