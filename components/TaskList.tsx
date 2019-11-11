@@ -9,7 +9,6 @@ import { Task,
     TasksDocument, 
     TaskStatus, 
     ChangeStatusMutationFn, 
-    withChangeStatus,
     ChangeStatusMutation,
     ChangeStatusMutationVariables,
     ChangeStatusDocument} from '../generated/graphql';
