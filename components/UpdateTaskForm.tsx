@@ -196,6 +196,12 @@ const UpdateTaskForm: React.FunctionComponent<AllProps> = ({
   );
 };
 
-export default withUpdateTask<ExposedProps, UpdateTaskMutationProps>({
-  props: ({ mutate }) => ({ updateTask: mutate })
-})(UpdateTaskForm);
+export default withUpdateTask<ExposedProps, UpdateTaskMutationProps>({props: ({ mutate }) => ({ updateTask: mutate })})(UpdateTaskForm);
+
+
+
+// Argument of type '{ props: ({ mutate }: OptionProps<ExposedProps, { __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables>) => { ...; }; }' is not assignable to parameter of type 'OperationOption<ExposedProps, { __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables, UpdateTaskProps<...>>'.
+  // Types of property 'props' are incompatible.
+    // Type '({ mutate }: OptionProps<ExposedProps, { __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables>) => { ...; }' is not assignable to type '(props: OptionProps<ExposedProps, { __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables>, lastProps?: void | ... 1 more ... | undefined) => UpdateTaskProps<...>'.
+      // Type '{ updateTask: MutationFunction<{ __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables> | undefined; }' is not assignable to type 'UpdateTaskProps<UpdateTaskMutationProps>'.
+        // Type '{ updateTask: MutationFunction<{ __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables> | undefined; }' is missing the following properties from type 'MutateProps<{ __typename?: "Mutation" | undefined; } & { updateTask: Maybe<{ __typename?: "Task" | undefined; } & Pick<Task, "id" | "title" | "status">>; }, UpdateTaskMutationVariables>': mutate, resultts(2345)
