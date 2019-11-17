@@ -91,6 +91,20 @@ export type UpdateTaskInput = {
 };
 
 
+export type ChangeStatusMutationVariables = {
+  id: Scalars['Int'],
+  status: TaskStatus
+};
+
+
+export type ChangeStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { changeStatus: Maybe<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
 export type CreateTaskMutationVariables = {
   input: CreateTaskInput
 };
@@ -99,6 +113,19 @@ export type CreateTaskMutationVariables = {
 export type CreateTaskMutation = (
   { __typename?: 'Mutation' }
   & { createTask: Maybe<(
+    { __typename?: 'Task' }
+    & Pick<Task, 'id' | 'title' | 'status'>
+  )> }
+);
+
+export type DeleteTaskMutationVariables = {
+  id: Scalars['Int']
+};
+
+
+export type DeleteTaskMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteTask: Maybe<(
     { __typename?: 'Task' }
     & Pick<Task, 'id' | 'title' | 'status'>
   )> }
@@ -144,6 +171,35 @@ export type UpdateTaskMutation = (
 );
 
 
+export const ChangeStatusDocument = gql`
+    mutation ChangeStatus($id: Int!, $status: TaskStatus!) {
+  changeStatus(id: $id, status: $status) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type ChangeStatusMutationFn = ApolloReactCommon.MutationFunction<ChangeStatusMutation, ChangeStatusMutationVariables>;
+export type ChangeStatusComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<ChangeStatusMutation, ChangeStatusMutationVariables>, 'mutation'>;
+
+    export const ChangeStatusComponent = (props: ChangeStatusComponentProps) => (
+      <ApolloReactComponents.Mutation<ChangeStatusMutation, ChangeStatusMutationVariables> mutation={ChangeStatusDocument} {...props} />
+    );
+    
+export type ChangeStatusProps<TChildProps = {}> = ApolloReactHoc.MutateProps<ChangeStatusMutation, ChangeStatusMutationVariables> & TChildProps;
+export function withChangeStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ChangeStatusMutation,
+  ChangeStatusMutationVariables,
+  ChangeStatusProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, ChangeStatusMutation, ChangeStatusMutationVariables, ChangeStatusProps<TChildProps>>(ChangeStatusDocument, {
+      alias: 'changeStatus',
+      ...operationOptions
+    });
+};
+export type ChangeStatusMutationResult = ApolloReactCommon.MutationResult<ChangeStatusMutation>;
+export type ChangeStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeStatusMutation, ChangeStatusMutationVariables>;
 export const CreateTaskDocument = gql`
     mutation CreateTask($input: CreateTaskInput!) {
   createTask(input: $input) {
@@ -173,6 +229,35 @@ export function withCreateTask<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type CreateTaskMutationResult = ApolloReactCommon.MutationResult<CreateTaskMutation>;
 export type CreateTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTaskMutation, CreateTaskMutationVariables>;
+export const DeleteTaskDocument = gql`
+    mutation DeleteTask($id: Int!) {
+  deleteTask(id: $id) {
+    id
+    title
+    status
+  }
+}
+    `;
+export type DeleteTaskMutationFn = ApolloReactCommon.MutationFunction<DeleteTaskMutation, DeleteTaskMutationVariables>;
+export type DeleteTaskComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<DeleteTaskMutation, DeleteTaskMutationVariables>, 'mutation'>;
+
+    export const DeleteTaskComponent = (props: DeleteTaskComponentProps) => (
+      <ApolloReactComponents.Mutation<DeleteTaskMutation, DeleteTaskMutationVariables> mutation={DeleteTaskDocument} {...props} />
+    );
+    
+export type DeleteTaskProps<TChildProps = {}> = ApolloReactHoc.MutateProps<DeleteTaskMutation, DeleteTaskMutationVariables> & TChildProps;
+export function withDeleteTask<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteTaskMutation,
+  DeleteTaskMutationVariables,
+  DeleteTaskProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteTaskMutation, DeleteTaskMutationVariables, DeleteTaskProps<TChildProps>>(DeleteTaskDocument, {
+      alias: 'deleteTask',
+      ...operationOptions
+    });
+};
+export type DeleteTaskMutationResult = ApolloReactCommon.MutationResult<DeleteTaskMutation>;
+export type DeleteTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteTaskMutation, DeleteTaskMutationVariables>;
 export const TaskDocument = gql`
     query Task($id: Int!) {
   task(id: $id) {
